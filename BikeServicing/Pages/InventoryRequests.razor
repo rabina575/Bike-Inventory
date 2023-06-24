@@ -1,0 +1,174 @@
+﻿@page "/inventoryRequests"
+@*Page for inventory requests (only visible to admin)*@
+<main>
+    <h3>Inventory Requests</h3>
+    <br />
+
+    <p class="note"> Note that Retrieval of Inventories can only be done from 9:00 AM - 4:00 PM (Monday - Friday).</p>
+    @*Table to show requests*@
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Date Requested</th>
+                <th>Requested By</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*To fetch all taking out requests along with the staff requesting it*@
+            @if (histories != null && histories.Count > 0)
+            {
+                @foreach (var history in histories)
+                {
+                    <tr>
+                        @{
+                            var item = ItemServices.FetchItemById(history.ItemId);
+                        }
+                        <td>@item.Name</td>
+                        <td>@history.Quantity</td>
+                        <td>@history.DateRequested.ToString("dd MMM, yyyy")</td>
+                        <td>
+                            @{
+                                var takenBy = UsersServices.GetById(history.TakenBy);
+                                <span>
+                                    @(
+                                    takenBy == null ? "system" : (takenBy.Username)
+                                        )
+                                </span>
+                            }
+                        </td>
+                        @*To approve or reject the inventory take out request*@
+                        <td>@history.Action</td>
+                        <td>
+                            <button class="approve" @onclick=@(()=> Handle_displayApproveDialog(history)) disabled="@Disable"><span class="oi oi-check"></span> <span class="margin-left">Approve</span></button>
+                            <button class="delete" @onclick=@(()=> Handle_displayDeleteDialog(history))><span class="oi oi-delete"></span><span class="margin-left"> Reject </span></button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr class="emptyTable"></tr>
+            }
+        </tbody>
+    </table>
+</main>
+
+@*To confirm rejection of the take out request*@
+@if (_displayDeleteDialog)
+{
+    <section class="background" @onclick=@(() => {_displayDeleteDialog=false; ErrorMessage="";})></section>
+    <div>
+        <h3 class="dialog-reject">Reject Takeout</h3>
+        @if (ErrorMessage.Length > 0)
+        {
+            <p class="error"><span class="oi oi-warning"></span> @ErrorMessage</p>
+        }
+        <p>
+            Do you want to reject the take away of
+            @{
+                var item = ItemServices.FetchItemById(_disapproveItem.ItemId);
+                <span>@item.Name</span>
+            }
+            ?
+        </p>
+        <button @onclick="@HandleDelete" class="delete"> Yes. I Reject</button>
+        <button class="cancel" @onclick=@(() => _displayDeleteDialog=false)> No, Cancel</button>
+    </div>
+}
+
+@*To confirm approval of the take out request*@
+@if (_displayApproveDialog)
+{
+    <section class="background" @onclick=@(() => {_displayApproveDialog=false; ErrorMessage="";})></section>
+    <div>
+        <h3 class="dialog-approve">Approve Takeout</h3>
+        @if (ErrorMessage.Length > 0)
+        {
+            <p class="error"><span class="oi oi-warning"></span> @ErrorMessage</p>
+        }
+        <p>
+            Do you want to approve the take away of
+            @{
+                var item = ItemServices.FetchItemById(_disapproveItem.ItemId);
+                <span>@item.Name</span>
+            }
+            ?
+        </p>
+        <button @onclick="@HandleApprove" class="approve"> Yes! I Approve</button>
+        <button class="cancel" @onclick=@(() => _displayApproveDialog=false)> No, Cancel</button>
+    </div>
+}
+
+@code {
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+    private List<InventoryRecord> histories { get; set; }
+    private bool _displayDeleteDialog { get; set; }
+    private bool _displayApproveDialog { get; set; }
+    private InventoryRecord _disapproveItem { get; set; }
+    private bool Disable { get; set; }
+
+    //To fetch item history
+    protected override void OnInitialized()
+    {
+        histories = ItemServices.FetchPendingItemHistory();
+    }
+
+    string ErrorMessage = "";
+
+    // Reject Dialog Box
+    private void Handle_displayDeleteDialog(InventoryRecord record)
+    {
+        _disapproveItem = record;
+        _displayDeleteDialog = true;
+    }
+
+    // Approve Dialog Box
+    private void Handle_displayApproveDialog(InventoryRecord record)
+    {
+        _disapproveItem = record;
+        _displayApproveDialog = true;
+    }
+
+    // Reject Working Mechanism
+    public void HandleDelete()
+    {
+        try
+        {
+            histories = ItemServices.HandleTakeAction(_disapproveItem.Id, _globalState.CurrentUser.Id, RequestStatus.Reject);
+            histories = ItemServices.FetchPendingItemHistory();
+            _displayDeleteDialog = false;
+            ErrorMessage = "";
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.Message;
+        }
+    }
+
+    // Approve Working Mechanism
+    public void HandleApprove()
+    {
+        var currentTime = DateTime.Now;
+        var currentDay = (int)DateTime.Today.DayOfWeek;
+        if ( currentTime.Hour >= 9 && currentTime.Hour <= 17 && currentDay <= 5 )
+        {
+            Disable = false;
+        }
+        try
+        {
+            histories = ItemServices.HandleTakeAction(_disapproveItem.Id, _globalState.CurrentUser.Id, RequestStatus.Approve);
+            histories = ItemServices.FetchPendingItemHistory();
+            _displayApproveDialog = false;
+            ErrorMessage = "";
+        }
+        catch (Exception e)
+        {
+            ErrorMessage = e.Message;
+        }
+    }
+}

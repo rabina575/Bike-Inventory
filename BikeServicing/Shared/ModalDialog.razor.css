@@ -1,0 +1,35 @@
+﻿.modal-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #3cbff1;
+    background-color: white;
+}
+.btn-color {
+    font-size: 1rem;
+    border: none;
+    border: 2px solid #2b87aa;
+    background-color: transparent;
+    color: #3cbff1;
+    padding: 0.57rem;
+    border-radius: 0.3rem;
+    transition: 0.15s ease-in-out;
+    justify-content: center;
+    justify-items: center;
+    width: 70px
+}
+    .btn-color:hover {
+        background: #3cbff1;
+        color: white;
+    }
+.btn {
+    color: #757575;
+    border: 2px solid #757575;
+    background-color: white;
+    padding: 5px;
+    width: 70px
+}
+
+    .btn:hover {
+        background-color: #757575 !important;
+        color: white !important;
+    }

@@ -1,0 +1,140 @@
+﻿@page "/inventoryLogs"
+@*Page for inventory records*@
+<ul>
+    <li><a class='@(currentTab == RequestStatus.Approve ? "active" : "")' @onclick='()=>CurrentTab(RequestStatus.Approve)'>Approved</a></li>
+    <li><a class='@(currentTab == RequestStatus.Reject ? "active" : "")' @onclick='()=>CurrentTab(RequestStatus.Reject)'>Rejected</a></li>
+</ul>
+
+@*There are two tabs in inventory records : list of rejected and approved*@
+<h1>Record - @(currentTab == RequestStatus.Reject ? "Rejected" : "Approved")</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Items Name</th>
+            <th>Quantity</th>
+            <th>Taken Out Request</th>
+            <th>@(currentTab == RequestStatus.Reject ? "Rejected" : "Approved") Date </th>
+            <th>Requested By</th>
+            <th>@(currentTab == RequestStatus.Reject ? "Rejected" : "Approved") By</th>
+        </tr>
+    </thead>
+
+    @*The list of rejected requests are shown here by fetching the records.*@
+    @if (currentTab == RequestStatus.Reject)
+    {
+        <tbody>
+
+            @if (rejectedHistories != null && rejectedHistories.Count > 0)
+            {
+                @foreach (var history in rejectedHistories)
+                {
+                    <tr>
+                        @{
+                            var item = ItemServices.FetchItemById(history.ItemId);
+                        }
+                        <td>@item.Name</td>
+                        <td>@history.Quantity</td>
+                        <td>@history.DateRequested.ToString("dd MMM, yyyy")</td>
+                        <td>@history.DateApproved.ToString("dd MMM, yyyy")</td>
+                        <td>
+                            @{
+                                var takenBy = UsersServices.GetById(history.TakenBy);
+                                <span>
+                                    @(
+                                    takenBy == null ? "system" : (takenBy.Username)
+                                        )
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @{
+                                var actedBy = UsersServices.GetById(history.ApprovedBy);
+                                <span>
+                                    @(
+                                    actedBy == null ? "Pending" : (actedBy.Username)
+                                        )
+                                </span>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            }
+            else
+            {
+                <tr class="emptyTable"></tr>
+            }
+        </tbody>
+    }
+
+    @*The list of approved requests are shown here by fetching the records.*@
+    @if (currentTab == RequestStatus.Approve)
+    {
+        <tbody>
+
+            @if (approvedHistories != null && approvedHistories.Count > 0)
+            {
+                @foreach (var history in approvedHistories)
+                {
+                    <tr>
+                        @{
+                            var item = ItemServices.FetchItemById(history.ItemId);
+                        }
+                        <td>@item.Name</td>
+                        <td>@history.Quantity</td>
+                        <td>@history.DateRequested.ToString("dd MMM, yyyy")</td>
+                        <td>@history.DateApproved.ToString("dd MMM, yyyy")</td>
+                        <td>
+                            @{
+                                var takenBy = UsersServices.GetById(history.TakenBy);
+                                <span>
+                                    @(
+                                    takenBy == null ? "system" : (takenBy.Username)
+                                        )
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @{
+                                var actedBy = UsersServices.GetById(history.ApprovedBy);
+                                <span>
+                                    @(
+                                    actedBy == null ? "Pending" : (actedBy.Username)
+                                        )
+                                </span>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            }
+            else
+            {
+                <tr class="emptyTable"></tr>
+            }
+        </tbody>
+    }
+</table>
+
+@code {
+    [CascadingParameter]
+    private GlobalState globalUser { get; set; }
+    private List<InventoryRecord> rejectedHistories { get; set; }
+    private List<InventoryRecord> approvedHistories { get; set; }
+    private RequestStatus currentTab { get; set; } = RequestStatus.Approve;
+
+    // To fetch the list collection of rejected and approved
+    protected override void OnInitialized()
+    {
+        rejectedHistories = ItemServices.FetchRejectedItemHistory();
+        approvedHistories = ItemServices.FetchApprovedItemHistory();
+    }
+
+    // To show which tab is currently open
+    private void CurrentTab(RequestStatus action)
+    {
+        currentTab = action;
+    }
+}

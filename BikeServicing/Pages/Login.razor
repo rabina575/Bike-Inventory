@@ -1,0 +1,94 @@
+﻿@page "/login"
+@*login page of the system*@
+
+@inject NavigationManager NavManager
+
+
+@*Login form*@
+<div class="login-body">
+    <div class="form-login">
+        <form class="text-center" @onsubmit="LoginHandler">
+            <img src="./image/Logo1.png" alt="Windbreaker Logo" width="200px">
+            <h1 class="login">Login</h1>
+            <div class="spacing">
+                <div class="form-floating">
+                    <input type="text" class="form-control username" @bind="_username" placeholder="Username" />
+                    <label for="floatingInput">Username</label>
+                </div>
+                <br>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control password" @bind="_password" placeholder="Password" />
+                    <label for="floatingPassword">Password</label>
+                </div>
+                @if (!string.IsNullOrEmpty(_errorMessage))
+                {
+                    <AlertMessage Type="danger" Message="@_errorMessage" />
+                }
+            </div>
+            
+            <button class="w-100 btn btn-lg btn-danger" type="submit">
+                <span class="oi oi-account-login"></span> Login
+            </button>
+        </form>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    private GlobalState _globalState { get; set; }
+    private bool _showDefaultCredentials { get; set; }
+    private string _username { get; set; }
+    private string _password { get; set; }
+    private string _errorMessage = "";
+
+
+    //first user 
+    protected override void OnInitialized()
+    {
+        try
+        {
+            var user = UsersServices.Login(UsersServices.SeedUsername, UsersServices.SeedPassword);
+        }
+        catch { }
+
+        _globalState.CurrentUser = null;
+        _errorMessage = "";
+    }
+
+    //login validation
+    private void LoginHandler()
+    {
+        try
+        {
+            _errorMessage = "";
+            _globalState.CurrentUser = UsersServices.Login(_username, _password);
+            if (_globalState.CurrentUser != null)
+            {
+                NavManager.NavigateTo("/inventory");
+            }
+        }
+        catch (Exception e)
+        {
+            _errorMessage = e.Message;
+            Console.WriteLine(e);
+        }
+    }
+}
+
+@*Padding for the login*@
+<style>
+    * {
+        font-family: Bahnschrift;
+    }
+
+    .form-login {
+        padding: 100px;
+        padding-left:200px;
+        padding-right:200px;
+    }
+
+    .login {
+        padding: 10px;
+    }
+    
+</style>

@@ -1,0 +1,210 @@
+﻿h3 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 15px;
+    color: #1b1b1b;
+}
+.note {
+    color: #0d90ba;
+}
+table {
+    display: block;
+    overflow-x: auto;
+    margin-top: 1.2rem;
+    border-bottom: 1px solid #0d90ba;
+    max-width: 100%;
+    position: relative;
+}
+
+    table td:first-child, th:first-child {
+        min-width: 150px;
+        text-align: left;
+    }
+
+    table td:nth-child(2), th:nth-child(2) {
+        min-width: 90px;
+        text-align: left;
+    }
+
+    table td:nth-child(3), th:nth-child(3) {
+        min-width: 90px;
+        text-align: left;
+    }
+
+    table td:nth-child(4), th:nth-child(4) {
+        min-width: 100px;
+        text-align: left;
+    }
+
+    table td:nth-child(5), th:nth-child(5) {
+        min-width: 180px;
+        text-align: left;
+    }
+
+    table td:nth-child(6), th:nth-child(6) {
+        min-width: 150px;
+        text-align: left;
+    }
+
+
+    table td:nth-child(7), th:nth-child(7) {
+        min-width: 130px;
+        text-align: left;
+    }
+
+    table td:last-child, th:last-child {
+        min-width: 170px;
+        text-align: left;
+    }
+
+    table tr:nth-child(2n) {
+        background: #def6ff;
+    }
+
+    table > thead {
+        border-bottom: 1px solid #0d90ba;
+        max-width: 100%;
+    }
+
+        table > thead > tr > th {
+            font-size: 1rem;
+            color: #0d90ba;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+    table > tbody > tr {
+        cursor: pointer;
+    }
+
+        table > tbody > tr:last-child {
+            border: none;
+        }
+
+    table td {
+        padding: 0.5rem;
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: #3cbff1;
+    }
+
+td:last-child, th:last-child {
+    border: none;
+}
+
+table > tbody > tr > td:last-child {
+    text-align: center;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #00000092;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 500px;
+    overflow: auto;
+}
+div {
+    display: block;
+    padding: 1rem;
+    width: 100%;
+    max-width: 450px;
+    background-color: white;
+    border-radius: 0.35rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+    div > button {
+        background-color: transparent;
+        border: 2px solid #3b3b3b;
+        font-weight: bold;
+        font-size: 0.9rem;
+        padding: 0.35rem;
+        color: #3b3b3b;
+        border-radius: 0.15rem;
+        margin-right: 1rem;
+    }
+
+        div > button:hover {
+            background-color: #3b3b3b;
+            color: white;
+        }
+.emptyTable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 5rem;
+}
+
+    .emptyTable::before {
+        content: "No items found!";
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 42px);
+        top: 42px;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #a0a0a0;
+        font-weight: bold;
+        line-height: 4;
+    }
+
+.approve {
+    color: #59cc59;
+    background-color: white;
+    padding: 5px;
+    border: 2px solid #59cc59 ;
+}
+    .approve:hover {
+        background: #59cc59;
+        color: white;
+    }
+
+.delete {
+    color: #e33030;
+    border: 2px solid #dc143c;
+    background-color: white;
+    padding: 5px;
+}
+    .delete:hover {
+        background: #e33030;
+        color: white;
+    }
+.cancel {
+    color: #757575;
+    border: 2px solid #757575;
+    background-color: white;
+    padding: 5px;
+}
+    .cancel:hover {
+        background-color: #757575 !important;
+        color: white !important;
+    }
+.dialog-reject{
+    font-size: 1.3rem;
+        font-weight: bold;
+        color: #e33030;
+        margin-bottom: 10px;
+}
+.dialog-approve {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #3cbff1;
+    margin-bottom: 10px;
+}
+
+
+.margin-left{
+    margin-left:5px;
+}

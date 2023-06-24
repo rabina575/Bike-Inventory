@@ -1,0 +1,136 @@
+﻿.users {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #1b1b1b;
+    margin-top: 15px;
+    background-color: white;
+}
+
+.margin {
+    margin-left:7px;
+}
+.add-Users {
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border: 2px solid #2b87aa;
+    background-color: transparent;
+    color: #3cbff1;
+    padding: 0.57rem;
+    border-radius: 0.3rem;
+    transition: 0.15s ease-in-out;
+    justify-content: center;
+    justify-items: center;
+    width: fit-content;
+}
+
+    .add-Users:hover {
+        color: white;
+        background-color: #3cbff1;
+    }
+
+table {
+    display: block;
+    overflow-x: auto;
+    margin-top: 1.2rem;
+    border-bottom: 1px solid #0d90ba;
+    max-width: 100%;
+    position: relative;
+}
+
+    table td:first-child, th:first-child {
+        min-width: 200px;
+        text-align: left;
+    }
+
+    table td:nth-child(2), th:nth-child(2) {
+        min-width: 90px;
+        text-align: left;
+    }
+
+    table td:nth-child(3), th:nth-child(3) {
+        min-width: 90px;
+        text-align: left;
+    }
+
+    table td:nth-child(4), th:nth-child(4) {
+        min-width: 100px;
+        text-align: left;
+    }
+
+    table td:last-child, th:last-child {
+        min-width: 130px;
+        text-align: left;
+    }
+
+    table tr:nth-child(2n) {
+        background: #def6ff;
+    }
+
+    table > thead {
+        border-bottom: 1px solid #0d90ba;
+        max-width: 100%;
+    }
+
+        table > thead > tr > th {
+            font-size: 1rem;
+            color: #0d90ba;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+    table > tbody > tr {
+        cursor: pointer;
+    }
+
+        table > tbody > tr:last-child {
+            border: 2px white;
+        }
+
+    table td {
+        padding: 0.5rem;
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: #3cbff1;
+        border:none;
+    }
+
+table > tbody > tr > td:last-child {
+    text-align: center;
+
+}
+
+.emptyTable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 5rem;
+}
+
+    .emptyTable::before {
+        content: "No items found!";
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 42px);
+        top: 42px;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #a0a0a0;
+        font-weight: bold;
+        line-height: 4;
+    }
+
+.user-add {
+    color: #59cc59;
+    border-color: #59cc59;
+    background-color: white;
+    padding: 5px;
+}
+
+    .user-add:hover {
+        background: #59cc59;
+        color: white;
+    }

@@ -1,0 +1,64 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href=""> Bike Servicing </a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class='@(_collapseNavMenu ? "collapse" : "")' @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3"><h5 class="welcome">Welcome <strong class="user">@Username</strong>~</h5></div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="inventory">
+                <span class="oi oi-book" /> Inventory
+            </NavLink>
+        </div>
+        @if (UserRoles == Roles.Admin)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="inventoryLogs">
+                    <span class="oi oi-script" /> Inventory Logs
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="inventoryRequests">
+                    <span class="oi oi-share-boxed" /> Inventory Requests
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="users">
+                    <span class="oi oi-people" /> Users
+                </NavLink>
+            </div>
+
+        }
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="chart">
+                <span class="oi oi-graph" /> Chart Analysis
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" role="button" @onclick="LogoutHandler">
+                <span class="oi oi-account-logout" /> Logout
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    [Parameter]
+    public string Username { get; set; }
+    [Parameter]
+    public Roles UserRoles { get; set; }
+    [Parameter]
+    public EventCallback LogoutHandler { get; set; }
+
+    private bool _collapseNavMenu { get; set; } = true;
+
+    private void ToggleNavMenu()
+    {
+        _collapseNavMenu = !_collapseNavMenu;
+    }
+}

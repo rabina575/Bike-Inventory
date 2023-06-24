@@ -1,0 +1,70 @@
+﻿@page "/chart"
+@*Chart of the inventory items taken out*@
+@using Syncfusion.Blazor.Charts;
+@using Syncfusion.Blazor;
+
+
+<main>
+    <h3 class="chartAnalysis">Chart Analysis</h3>
+
+    @*Fetching all taken out inventory items*@
+    @foreach (var data in datas)
+    {
+        var item = ItemServices.FetchItemById(data.ItemId);
+        data.ItemName = item.Name;
+    }
+
+    @*Palletes adn widths along with the data of the chart*@
+    <SfChart Title="Item unit sales" Palettes="@palettes" Width="100%" Background="white">
+        <ChartArea>
+            <ChartAreaBorder Color="#0d90ba" Width="1" />
+        </ChartArea>
+
+        <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"></ChartPrimaryXAxis>
+        <ChartSeriesCollection>
+            <ChartSeries DataSource="@datas" XName="ItemName" YName="Quantity" Type="ChartSeriesType.Column">
+            </ChartSeries>
+        </ChartSeriesCollection>
+    </SfChart>
+
+    @if (datas.Count < 1)
+    {
+        <p>No Data Available</p>
+    }
+    <h2 class="chartTitle"> Inventory Items Taken Out </h2>
+
+</main>
+
+
+@code {
+    // data collected from items chart
+    private List<ItemsChart> datas { get; set; }
+
+    // using syncfusion and taken out data from item services.
+    protected override void OnInitialized()
+    {
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBaFt/QHRqVVhjVFpGaVxdX2NLfUN3RWldeVRwc0U3HVdTRHRcQlxjTX9TckNjUXteeHY=;Mgo+DSMBPh8sVXJ0S0J+XE9HflRAQmBWfFN0RnNYf1R0cl9GZ0wgOX1dQl9gSX9TckRjXXleeHBXRWI=;ORg4AjUWIQA/Gnt2VVhkQlFadVdJX3xKYVF2R2BJfl56cFNMYFtBNQtUQF1hSn5SdkFiWXtYcHxRRWhe;ODczNzY4QDMyMzAyZTM0MmUzMFJ0eFNzbzFmVWxMTGF4dDZmalNRV1dFU1R0TldMcWR5SlltWldLek83ODA9;ODczNzY5QDMyMzAyZTM0MmUzMGhtWVhlOEZiVUd1czhsbStxd1gzR29DSGNqN2lXYXlmVGgxTEJoWm9WN009;NRAiBiAaIQQuGjN/V0Z+WE9EaFxKVmFWfUx0RWFab19wflFAalxWVAciSV9jS31Td0VnWH9adnRdQ2FdUw==;ODczNzcxQDMyMzAyZTM0MmUzMEh5Mk5lVlFzY0N5d0hlMU9HaDdLeENOZUpwdkhYWG1NaDVBM3MvKzl2QTA9;ODczNzcyQDMyMzAyZTM0MmUzMGF6WUNpVkpmeE1TZ0xhNG53bkh3Y3hPT2J2TEdFVGJOazlMcVNqWldTUnc9;Mgo+DSMBMAY9C3t2VVhkQlFadVdJX3xKYVF2R2BJfl56cFNMYFtBNQtUQF1hSn5SdkFiWXtYcHxQQWZe;ODczNzc0QDMyMzAyZTM0MmUzMGR0aFJPTlRNYXg0M3kyOTcrMnBHd2FJcXhtdktGSmV5SWFBTFpUekoxVjQ9;ODczNzc1QDMyMzAyZTM0MmUzMGlYUDVPNS9paDNRSHdrWmlVVGFzTzBEMHhFWE5zN0JtZmFIeEZKLzd5WVk9;ODczNzc2QDMyMzAyZTM0MmUzMEh5Mk5lVlFzY0N5d0hlMU9HaDdLeENOZUpwdkhYWG1NaDVBM3MvKzl2QTA9");
+        datas = ItemServices.ItemTakenData();
+    }
+    
+    // color for the graph
+    public String[] palettes = new String[] { "#0d90ba" };
+}
+
+@*Style for chart title*@
+<style>
+    .chartAnalysis{
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #1b1b1b;
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+    .chartTitle {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #0d90ba;
+        text-align:center;
+        margin-top: 15px;
+    }
+</style>
